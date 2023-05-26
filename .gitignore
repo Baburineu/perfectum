@@ -1,0 +1,9 @@
+node_modules
+package-lock.json
+.vscode
+.idea
+_results_
+allure-report
+allure-results
+*.log
+*.lock
