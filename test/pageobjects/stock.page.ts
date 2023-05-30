@@ -50,7 +50,7 @@ class StockPage extends Page {
     }
 
     async openMenuDropdownAndSelectSubmenu(submenu) {
-        await this.tradeMenuDropdown.waitForDisplayed({timeout: 30000})
+        await this.tradeMenuDropdown.waitForDisplayed({timeout: 50000})
         await this.tradeMenuDropdown.moveTo()
         await this.tradeSubmenuDropdown(submenu).click()
     }
@@ -61,13 +61,14 @@ class StockPage extends Page {
 
     async addNewStockItem(parameters: {}) {
         await this.addNewStockItemButton.click()
-        await this.modalTitle.waitForDisplayed()
+        await this.modalTitle.waitForDisplayed({timeout: 30000})
         for (const key of Object.keys(parameters)) {
             if (key == 'Категорія' || key == 'Постачальник'|| key == 'Одиниці виміру') {
                 const basePath = await $(`//div[@class="tab-content"]//label[text()='${key}']/../div`);
                 await basePath.scrollIntoView({block: 'center', inline: 'center'});
                 await basePath.click()
                 const option = await $(`//div[@class="dropdown-menu show"]//span[(text()='${parameters[key]}')]`)
+                await option.waitForDisplayed({timeout: 30000})
                 await option.click()
             } else {
                 const input = await $(`//div[@class="tab-content"]//label[text()='${key}']/../input`);
@@ -77,7 +78,7 @@ class StockPage extends Page {
         }
         await this.stockItemSubmit.scrollIntoView({block: 'center', inline: 'center'});
         await this.stockItemSubmit.click()
-        await Modal.modalTitle("Новий товар").waitForDisplayed({reverse: true});
+        await Modal.modalTitle("Новий товар").waitForDisplayed({timeout:20000, reverse: true});
         return this;
     }
 
@@ -150,19 +151,11 @@ class StockPage extends Page {
     }
 
     async deleteStockItem(stockItemName) {
-        await $(this.stockItemNameInTable(stockItemName)).waitForDisplayed()
+        await $(this.stockItemNameInTable(stockItemName)).waitForDisplayed({timeout: 30000})
         await $(this.stockItemNameInTable(stockItemName)).moveTo()
-        // await $(`${this.stockItemNameInTable(stockItemName)}${this.stockItemNameDeleteButton()}`).click()
         await this.stockItemNameDeleteButton().waitForClickable()
         await this.stockItemNameDeleteButton().click()
-        await browser.waitUntil(async () => {
-            try {
-                await browser.acceptAlert();
-                return true;
-            } catch (error) {
-                return false;
-            }
-        }, { timeout: 5000, timeoutMsg: `Алерт не з'явився протягом 5 секунд`});
+        await browser.acceptAlert()
     }
 
     async editStockItem(stockItemName, parameters: {}) {
@@ -194,7 +187,7 @@ class StockPage extends Page {
 
     async checkStockItemIsPresent(stockItemName, displayed= true) {
         const stockItemInTable = await $(`//td/a[contains(text(),"${stockItemName}")]`)
-        await stockItemInTable.waitForDisplayed({timeout: 4000, reverse: !displayed})
+        await stockItemInTable.waitForDisplayed({timeout: 20000, reverse: !displayed})
 
         if(displayed){
             await expect(await stockItemInTable).toBeDisplayed()

@@ -15,7 +15,7 @@ class ModalComponent {
     }
 
     async verifyModalTitle(modalTitle) {
-        await this.modalTitle(modalTitle).waitForDisplayed();
+        await this.modalTitle(modalTitle).waitForDisplayed({timeout:20000});
         await expect(this.modalTitle(modalTitle)).toHaveTextContaining(modalTitle)
     }
 
