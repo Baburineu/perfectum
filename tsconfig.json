@@ -16,7 +16,8 @@
             "@wdio/globals/types",
             "expect-webdriverio",
             "@wdio/mocha-framework",
-            "webdriverio"
+            "webdriverio",
+            "@wdio/devtools-service"
         ],
         "target": "es2022",
         "esModuleInterop": true,

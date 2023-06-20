@@ -1,7 +1,6 @@
 import LoginPage from '../pageobjects/login.page.ts'
 import StockPage from '../pageobjects/stock.page.ts'
 import Modal from '../pageobjects/components/modal.component.ts';
-
 import { faker } from '@faker-js/faker';
 
 describe('Stock page', () => {
